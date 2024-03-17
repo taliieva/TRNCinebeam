@@ -1,13 +1,13 @@
 import React from 'react'
-import Header from '../../components/Header.tsx'
-import Footer from '../../components/Footer.tsx'
+import Layout from '../../layout/Layout.tsx'
+import { Box, Card, CardBody, CardHeader, Text,Image } from '@chakra-ui/react'
+import CardContainer from './CardContainer.tsx'
 
 const HomePage = () => {
   return (
-    <>
-        <Header/>
-        <Footer/>
-    </>
+    <Layout>
+      <CardContainer/>
+    </Layout>
   )
 }
 
