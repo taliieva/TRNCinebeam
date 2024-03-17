@@ -7,21 +7,15 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import axios from "axios";
 import React, { useState } from "react";
-const Header = () => {
-  const [searchItem, setSearchItem] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
+interface IHeaderProps{
+  onSearch:(query:string)=> void
+}
+const Header:React.FC<IHeaderProps> = ({onSearch}) => {
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=${searchItem}`
-      );
-      setSearchResult(response.data.results);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSearch = () => {
+    onSearch(searchQuery);
   };
   return (
     <HStack
@@ -48,12 +42,10 @@ const Header = () => {
         <Text>Fear</Text>
       </HStack>
       <InputGroup width="20%" height="30px">
-        <InputLeftElement padding="5px" onClick={handleSearch} cursor="pointer">
+        <InputLeftElement padding="5px" cursor="pointer">
           <SearchIcon color={"black"} />
         </InputLeftElement>
         <Input
-          value={searchItem}
-          onChange={(e) => setSearchItem(e.target.value)}
           width="100%"
           padding="0 25px"
           fontSize="16px"
@@ -61,6 +53,8 @@ const Header = () => {
           placeholder="Search..."
           borderRadius={5}
           border="1px solid black"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               handleSearch();
