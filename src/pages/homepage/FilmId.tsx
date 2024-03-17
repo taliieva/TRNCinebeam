@@ -63,7 +63,7 @@ const FilmId = () => {
               <Text>Rating:</Text>
               <HStack>
                 <StarIcon color={'yellow'}/>
-                <Text>{filmData.vote_average}</Text>
+                <Text>{filmData && filmData.vote_average ? filmData.vote_average.toFixed(1) : 'N/A'}</Text>
               </HStack>
             </VStack>
             <VStack>
