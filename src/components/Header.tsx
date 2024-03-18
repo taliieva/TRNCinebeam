@@ -9,8 +9,14 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
-const Header = () => {
+const Header = ({onSearchChange}) => {
   const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    onSearchChange(value); // Bu, arama değerini CardContainer bileşenine iletecek
+  };
   return (
     <HStack
       bg={"black"}
@@ -48,7 +54,7 @@ const Header = () => {
           borderRadius={5}
           border="1px solid black"
           value={searchValue}
-          onChange={(e)=>setSearchValue(e.target.value)}
+          onChange={handleSearchChange}
         />
       </InputGroup>
     </HStack>

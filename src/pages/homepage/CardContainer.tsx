@@ -4,7 +4,7 @@ import FilmCard from "./FilmCard.tsx";
 import { Grid } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-const CardContainer = () => {
+const CardContainer = ({searchValue}) => {
   const [movies, setMovies] = useState<any[]>([]);
   useEffect(() => {
     const fetchCardResponse = async () => {
@@ -20,7 +20,9 @@ const CardContainer = () => {
     };
     fetchCardResponse();
   },);
-
+  const filteredMovies = movies.filter(movie =>
+    movie.original_title.toLowerCase().includes(searchValue ? searchValue.toLowerCase() : "")
+  );
   return (
     <Grid
       templateColumns="repeat(6, 1fr)"
@@ -29,7 +31,7 @@ const CardContainer = () => {
       justifyContent="center"
       alignItems="center"
     >
-      {movies.map((movie) => (
+      {filteredMovies.map((movie) => (
         <Link to={`/film/${movie.original_title}`} style={{textDecoration:"none"}}>
           <FilmCard
             key={movie.id}

@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import Layout from '../../layout/Layout.tsx'
-import { Box, Card, CardBody, CardHeader, Text,Image } from '@chakra-ui/react'
 import CardContainer from './CardContainer.tsx'
 
 const HomePage = () => {
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (value: any) => {
+    setSearchValue(value);
+  };
   return (
-    <Layout>
-      <CardContainer />
+    <Layout setSearchValue={handleSearchChange}>
+      <CardContainer searchValue={searchValue}/>
     </Layout>
   )
 }
