@@ -8,15 +8,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-interface IHeaderProps{
-  onSearch:(query:string)=> void
-}
-const Header:React.FC<IHeaderProps> = ({onSearch}) => {
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = () => {
-    onSearch(searchQuery);
-  };
+const Header = () => {
+  const [searchValue, setSearchValue] = useState("");
   return (
     <HStack
       bg={"black"}
@@ -53,13 +47,8 @@ const Header:React.FC<IHeaderProps> = ({onSearch}) => {
           placeholder="Search..."
           borderRadius={5}
           border="1px solid black"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch();
-            }
-          }}
+          value={searchValue}
+          onChange={(e)=>setSearchValue(e.target.value)}
         />
       </InputGroup>
     </HStack>
