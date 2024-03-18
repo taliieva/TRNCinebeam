@@ -10,7 +10,7 @@ const HomePage = () => {
   };
   return (
     <Layout setSearchValue={handleSearchChange}>
-      <CardContainer searchValue={searchValue}/>
+      <CardContainer searchValue={searchValue} />
     </Layout>
   )
 }

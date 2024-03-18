@@ -4,25 +4,29 @@ import FilmCard from "./FilmCard.tsx";
 import { Grid } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-const CardContainer = ({searchValue}) => {
+const CardContainer = ({ searchValue }) => {
   const [movies, setMovies] = useState<any[]>([]);
+
+  const fetchCardResponse = async () => {
+    try {
+      let url = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=9ace6723368dd9ec426287eee17509e3";
+      const response = await axios.get(url);
+      console.log(response);
+
+      setMovies(response.data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   useEffect(() => {
-    const fetchCardResponse = async () => {
-      try {
-        let url = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=e86f2bbf1c8ee2160e90df236faed478";
-        const response = await axios.get(url);
-        console.log(response);
-        
-        setMovies(response.data.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchCardResponse();
-  },);
+  },[]);
+
   const filteredMovies = movies.filter(movie =>
     movie.original_title.toLowerCase().includes(searchValue ? searchValue.toLowerCase() : "")
   );
+
   return (
     <Grid
       templateColumns="repeat(6, 1fr)"
@@ -31,8 +35,8 @@ const CardContainer = ({searchValue}) => {
       justifyContent="center"
       alignItems="center"
     >
-      {filteredMovies.map((movie) => (
-        <Link to={`/film/${movie.original_title}`} style={{textDecoration:"none"}}>
+      {filteredMovies?.map((movie) => (
+        <Link to={`/movie/${movie.id}`} key={movie.id} style={{ textDecoration: "none" }}>
           <FilmCard
             key={movie.id}
             title={movie.original_title}

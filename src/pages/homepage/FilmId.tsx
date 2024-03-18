@@ -5,33 +5,29 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const FilmId = () => {
-  const { filmName } = useParams();
+  const { filmId } = useParams();
   const [filmData, setFilmData] = useState<any>([]);
 
   useEffect(() => {
     const fetchFilmData = async () => {
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?api_key=e86f2bbf1c8ee2160e90df236faed478&query=${filmName}`
+          `https://api.themoviedb.org/3/movie/${filmId}?language=en-US&api_key=9ace6723368dd9ec426287eee17509e3`
         );
-        const matchedFilm = response.data.results.find(
-          (film: any) => film.original_title === filmName
-        );
-        if (matchedFilm) {
-          setFilmData(matchedFilm);
-        }
+        console.log(response);
+        setFilmData(response.data)
       } catch (error) {
         console.log(error);
       }
     };
     fetchFilmData();
-  }, [filmName]);
+  }, [filmId]);
   return (
     <VStack
       justifyContent="center"
       height="100vh"
       width="100%"
-      bgImg={`https://image.tmdb.org/t/p/w500${filmData.backdrop_path}`}
+      bgImg={`https://image.tmdb.org/t/p/w500${filmData?.backdrop_path}`}
       bgRepeat="no-repeat"
       bgSize="100% 70%"
     >
@@ -57,7 +53,7 @@ const FilmId = () => {
           justifyContent="space-between"
           alignItems="flex-start"
         >
-          <Text fontSize="26px" fontWeight={600} letterSpacing={2} color="white">{filmName}</Text>
+          <Text fontSize="26px" fontWeight={600} letterSpacing={2} color="white">{filmData?.original_title}</Text>
           <HStack gap={20}>
             <VStack>
               <Text>Rating:</Text>
@@ -69,7 +65,7 @@ const FilmId = () => {
             <VStack>
               <Text>Popularity:</Text>
               <HStack>
-                <Text>{Math.round(filmData.popularity)}</Text>
+                <Text>{Math.round(filmData?.popularity)}</Text>
               </HStack>
             </VStack>
           </HStack>
@@ -77,10 +73,10 @@ const FilmId = () => {
 
         <HStack alignItems="flex-start">
           <Image
-            src={`https://image.tmdb.org/t/p/w200${filmData.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w200${filmData?.poster_path}`}
           />
           <VStack
-            width="100%%"
+            width="100%"
             bg={"gray"}
             padding="15px 20px"
             borderRadius={10}
@@ -90,11 +86,10 @@ const FilmId = () => {
           >
             <Heading>Overview</Heading>
             <Text width="50%" textAlign="justify">
-              {filmData.overview}
+              {filmData?.overview}
             </Text>
             <Text fontWeight={600}>Release date:</Text>
-            <Text>{filmData.release_date}</Text>
-          
+            <Text>{filmData?.release_date}</Text>
           </VStack>
         </HStack>
       </VStack>

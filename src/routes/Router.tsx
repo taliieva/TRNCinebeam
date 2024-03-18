@@ -8,7 +8,7 @@ const Router = () => {
     <BrowserRouter>
         <Routes>
             <Route path='/' element={<HomePage/>}/>
-            <Route path='/film/:filmName' element={<FilmId/>}/>
+            <Route path='/movie/:filmId' element={<FilmId/>}/>
         </Routes>
     </BrowserRouter>
   )

@@ -12,10 +12,10 @@ import React, { useState } from "react";
 const Header = ({onSearchChange}) => {
   const [searchValue, setSearchValue] = useState("");
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e:any) => {
     const value = e.target.value;
     setSearchValue(value);
-    onSearchChange(value); // Bu, arama değerini CardContainer bileşenine iletecek
+    onSearchChange(value); 
   };
   return (
     <HStack
