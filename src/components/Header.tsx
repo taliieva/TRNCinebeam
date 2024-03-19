@@ -35,12 +35,12 @@ const Header = ({onSearchChange}) => {
       >
         TRNCinebeam
       </Text>
-      <HStack justifyContent="space-between" width="25%">
+      {/* <HStack justifyContent="space-between" width="25%">
         <Text>Drama</Text>
         <Text>Romantic</Text>
         <Text>Action</Text>
         <Text>Fear</Text>
-      </HStack>
+      </HStack> */}
       <InputGroup width="20%" height="30px">
         <InputLeftElement padding="5px" cursor="pointer">
           <SearchIcon color={"black"} />

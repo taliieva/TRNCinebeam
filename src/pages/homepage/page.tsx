@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Layout from '../../layout/Layout.tsx'
-import CardContainer from './CardContainer.tsx'
+import CardContainer from './components/CardContainer.tsx'
 
 const HomePage = () => {
   const [searchValue, setSearchValue] = useState("");
