@@ -1,69 +1,39 @@
 import { StarIcon } from "@chakra-ui/icons";
 import { VStack, Text, HStack, Image, Heading, Grid, Box, Flex } from "@chakra-ui/react";
 import axios from "axios";
-import { wrap } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import { Link, useParams } from "react-router-dom";
+import useTrailerVideos from "../../../hooks/useTrailerVideos.ts";
+import { useFilmDetails } from "../../../hooks/useFilmDetails.ts";
+import { useSimilarFilms } from "../../../hooks/useSimilarFilms.ts";
 
 const FilmId = () => {
   const { filmId } = useParams();
-  const [filmData, setFilmData] = useState<any>([]);
-  const [similarFilms, setSimilarFilms] = useState<any>([]);
-  const [video, setVideo] = useState<any>([]);
 
-  const fetchFilmData = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.themoviedb.org/3/movie/${filmId}?language=en-US&api_key=9ace6723368dd9ec426287eee17509e3`
-      );
-      setFilmData(response.data)
-      console.log(response);
-      
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { videos, fetchTrailerVidoes, isLoading } = useTrailerVideos();
+  const { details, fetchFilmDetails } = useFilmDetails();
+  const { similarFilms, fetchSimilarFilms } = useSimilarFilms()
 
 
-  const fetchSimilarMovies = async () => {
-    try {
-      const response = await axios.get(`https://api.themoviedb.org/3/movie/${filmId}/similar?language=en-US&page=1&api_key=9ace6723368dd9ec426287eee17509e3`);
-      setSimilarFilms(response.data.results.slice(0, 5))
-    }
-    catch (error) {
-      console.log('similar movies error', error);
-    }
-  }
-
-  const fetchVideos = async () => {
-    try {
-      const response = await axios.get(`https://api.themoviedb.org/3/movie/${filmId}/videos?language=en-US&api_key=9ace6723368dd9ec426287eee17509e3`);
-      setVideo(response.data.results.slice(0,1));
-    }
-    catch (error) {
-      console.log('video error', error);
-
-    }
-  }
 
   useEffect(() => {
-    fetchFilmData();
-    fetchSimilarMovies();
-    fetchVideos();
+    fetchFilmDetails({ filmId });
+    fetchSimilarFilms({ filmId })
+    fetchTrailerVidoes({ filmId });
   }, [filmId]);
 
 
   return (
     <VStack
-    padding="30px 0"
+      padding="30px 0"
       height="100vh"
       width="100%"
-      bgImg={`https://image.tmdb.org/t/p/w500${filmData?.backdrop_path}`}
+      bgImg={`https://image.tmdb.org/t/p/w500${details?.backdrop_path}`}
       bgRepeat="no-repeat"
       bgSize="100% 75%"
       gap={20}
-      >
+    >
 
       <VStack width="80%" align="flex-start" gap={20}>
         <Text
@@ -87,19 +57,20 @@ const FilmId = () => {
           justifyContent="space-between"
           alignItems="flex-start"
         >
-          <Text fontSize="26px" fontWeight={600} letterSpacing={2} color="white">{filmData?.original_title}</Text>
+          <Text fontSize="26px" fontWeight={600} letterSpacing={2} color="white">{details?.original_title}</Text>
           <HStack gap={20}>
             <VStack>
               <Text>Rating:</Text>
               <HStack>
                 <StarIcon color={'yellow'} />
-                <Text>{filmData && filmData.vote_average ? filmData.vote_average.toFixed(1) : 'N/A'}</Text>
+                <Text>{details && details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}</Text>
               </HStack>
             </VStack>
             <VStack>
               <Text>Popularity:</Text>
               <HStack>
-                <Text>{Math.round(filmData?.popularity)}</Text>
+                <Text>{Math.round(details?.popularity ?? 0)}
+                </Text>
               </HStack>
             </VStack>
           </HStack>
@@ -107,7 +78,7 @@ const FilmId = () => {
 
         <HStack alignItems="flex-start">
           <Image
-            src={`https://image.tmdb.org/t/p/w200${filmData?.poster_path}`}
+            src={`https://image.tmdb.org/t/p/w200${details?.poster_path}`}
           />
           <VStack
             width="100%"
@@ -120,13 +91,13 @@ const FilmId = () => {
           >
             <Heading>Overview</Heading>
             <Text width="50%" textAlign="justify">
-              {filmData?.overview}
+              {details?.overview}
             </Text>
             <Text fontWeight={600}>Release date:</Text>
-            <Text>{filmData?.release_date}</Text>
+            <Text>{details?.release_date}</Text>
             <Text fontWeight={600}>Category:</Text>
             <HStack>
-              {filmData?.genres?.map((genre: any) => (
+              {details?.genres?.map((genre: any) => (
 
                 <Text key={genre.id}>{genre.name}</Text>
               ))}
@@ -139,8 +110,8 @@ const FilmId = () => {
 
 
       <HStack width="80%" align="flex-start" gap={20} flexWrap="wrap">
-        {video.map((video: any) => (
-          <div key={video.id} className="react-player" style={{width:"100%", height:"100vh"}}>
+        {videos?.map((video: any) => (
+          <div key={video.id} className="react-player" style={{ width: "100%", height: "100vh" }}>
             <ReactPlayer url={`https://www.youtube.com/watch?v=${video.key}`} controls={true} width="100%" height="100%" />
           </div>
         ))}
