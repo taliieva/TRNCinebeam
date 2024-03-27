@@ -1,18 +1,20 @@
-import { Card, CardBody, CardHeader,HStack,Image, Text } from '@chakra-ui/react'
+import { Card, CardBody, CardHeader, HStack, Image, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 
-const FilmCard = ({title, image, imdb, language}) => {
+const FilmCard = ({ title, image, imdb, language }) => {
   return (
-    <Card width="220px" bg="gray" padding={10} borderRadius={10}>
-    <CardHeader color="black" fontWeight={600} fontSize={20} mb="5px">{title}</CardHeader>
-    <CardBody>
-      <Image src={image} alt={title}/>
-      <HStack justifyContent="space-between">
-      <Text color="black">IMDB: {imdb.toFixed(1)}</Text>
-      <Text color="black" textTransform={'uppercase'}>{language}</Text>
-      </HStack>
-    </CardBody>
-  </Card>
+    <Card width="100%" bg="gray" height="390px" padding={10} borderRadius={10}>
+      <Image src={image} alt={title} mb="10px"/>
+      <CardBody>
+        <VStack alignItems="flex-start" justifyContent="flex-end" h="100%">
+          <Text color={'black'} fontWeight={600} fontSize={"18px"}>{title}</Text>
+          <HStack justifyContent="space-between" w="100%">
+            <Text color="black">IMDB: {imdb.toFixed(1)}</Text>
+            <Text color="black" textTransform={'uppercase'}>{language}</Text>
+          </HStack>
+        </VStack>
+      </CardBody>
+    </Card>
   )
 }
 

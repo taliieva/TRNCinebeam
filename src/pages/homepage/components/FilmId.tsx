@@ -1,5 +1,5 @@
 import { StarIcon } from "@chakra-ui/icons";
-import { VStack, Text, HStack, Image, Heading, Grid, Box, Flex } from "@chakra-ui/react";
+import { VStack, Text, HStack, Image, Heading, Grid, Box, Flex, Input } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
@@ -7,6 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import useTrailerVideos from "../../../hooks/useTrailerVideos.ts";
 import { useFilmDetails } from "../../../hooks/useFilmDetails.ts";
 import { useSimilarFilms } from "../../../hooks/useSimilarFilms.ts";
+import { useUserReviews } from "../../../hooks/useUserReviews.ts";
 
 const FilmId = () => {
   const { filmId } = useParams();
@@ -14,12 +15,13 @@ const FilmId = () => {
   const { videos, fetchTrailerVidoes, isLoading } = useTrailerVideos();
   const { details, fetchFilmDetails } = useFilmDetails();
   const { similarFilms, fetchSimilarFilms } = useSimilarFilms()
-
+  const { userReviews, fetchUserReview } = useUserReviews()
 
 
   useEffect(() => {
     fetchFilmDetails({ filmId });
-    fetchSimilarFilms({ filmId })
+    fetchUserReview({ filmId });
+    fetchSimilarFilms({ filmId });
     fetchTrailerVidoes({ filmId });
   }, [filmId]);
 
@@ -116,6 +118,11 @@ const FilmId = () => {
           </div>
         ))}
       </HStack>
+{/* 
+      <VStack alignSelf="flex-start" padding={30}>
+        <Text>Add your comment</Text>
+        <Input placeholder="your comment" width="200px"/>
+      </VStack> */}
 
       <VStack bg="gray" width="80%" borderRadius={10} padding="15px 20px" alignItems="flex-start">
         <Heading >Similar Movies</Heading>
@@ -132,6 +139,7 @@ const FilmId = () => {
                 padding={10}
                 key={film.id}
                 alignItems="flex-start"
+                height="370px"
                 bg="black"
                 color={'white'}>
                 <Image src={`https://image.tmdb.org/t/p/w200${film?.poster_path}`} />
@@ -141,6 +149,7 @@ const FilmId = () => {
           ))}
         </Grid>
       </VStack>
+
     </VStack>
   );
 };
