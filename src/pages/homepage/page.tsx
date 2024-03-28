@@ -3,14 +3,10 @@ import Layout from '../../layout/Layout.tsx'
 import CardContainer from './components/CardContainer.tsx'
 
 const HomePage = () => {
-  const [searchValue, setSearchValue] = useState("");
-
-  const handleSearchChange = (value: any) => {
-    setSearchValue(value);
-  };
+  
   return (
-    <Layout setSearchValue={handleSearchChange}>
-      <CardContainer searchValue={searchValue} />
+    <Layout>
+      <CardContainer />
     </Layout>
   )
 }

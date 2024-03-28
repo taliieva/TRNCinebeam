@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import FilmCard from "./FilmCard.tsx";
-import { Grid, HStack, Text, VStack } from "@chakra-ui/react";
+import { Grid, HStack, Input, InputGroup, InputLeftElement, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { SearchIcon } from "@chakra-ui/icons";
 
-const CardContainer = ({ searchValue }) => {
+const CardContainer = () => {
   const [movies, setMovies] = useState<any[]>([]);
-  const [originalMovies, setOriginalMovies] = useState([]);
+  const [originalMovies, setOriginalMovies] = useState<any[]>([]);
+  const [searchValue, setSearchValue] = useState("");
+
 
   const fetchCardResponse = async () => {
     try {
@@ -16,6 +19,19 @@ const CardContainer = ({ searchValue }) => {
       setMovies(response.data.results);
     } catch (error) {
       console.log(error);
+    }
+  };
+  const handleSearchInput = (e: any) => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleEnterKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      const filteredMovies = originalMovies.filter(movie =>
+        movie.original_title.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      console.log("enter clicked");
+      setMovies(filteredMovies);
     }
   };
 
@@ -32,12 +48,29 @@ const CardContainer = ({ searchValue }) => {
     console.log(`Movies with genre id ${genreId}:`, moviesByGenre);
     setMovies(moviesByGenre);
   };
-  const filteredMovies = movies.filter(movie =>
-    movie.original_title.toLowerCase().includes(searchValue ? searchValue.toLowerCase() : "")
-  );
+  // const filteredMovies = movies.filter(movie =>
+  //   movie.original_title.toLowerCase().includes(searchValue ? searchValue.toLowerCase() : "")
+  // );
 
   return (
     <VStack padding={30} alignItems={"flex-start"} width="100%">
+      <InputGroup width="20%" height="30px" w="50%" margin="0 50px">
+        <InputLeftElement padding="5px" cursor="pointer" onClick={handleSearchInput}>
+          <SearchIcon color={"black"} />
+        </InputLeftElement>
+        <Input
+          value={searchValue}
+          onChange={handleSearchInput}
+          onKeyDown={handleEnterKeyPress}
+          width="100%"
+          padding="0 25px"
+          fontSize="16px"
+          outline="none"
+          placeholder="Search..."
+          borderRadius={5}
+          border="1px solid black"
+        />
+      </InputGroup>
       <HStack justifyContent="flex-start" width={"70%"} padding="0 50px" gap={20} mb={30}>
         <Text id="28" onClick={() => handleClick(28)} cursor={"pointer"} p="10px" bg="gray" borderRadius="20px"> Action</Text>
         <Text id="16" onClick={() => handleClick(16)} cursor={"pointer"} p="10px" bg="gray" borderRadius="20px">Animation</Text>
@@ -45,6 +78,7 @@ const CardContainer = ({ searchValue }) => {
         <Text id="10749" onClick={() => handleClick(10749)} cursor={"pointer"} p="10px" bg="gray" borderRadius="20px">Romance</Text>
         <Text id="12" onClick={() => handleClick(12)} cursor={"pointer"} p="10px" bg="gray" borderRadius="20px">Adventure</Text>
       </HStack>
+
       <Grid
         padding="0 50px"
         templateColumns="repeat(6, 1fr)"
@@ -52,7 +86,7 @@ const CardContainer = ({ searchValue }) => {
         alignItems={"center"}
 
       >
-        {filteredMovies?.map((movie) => (
+        {movies?.map((movie) => (
           <Link to={`/movie/${movie.id}`} key={movie.id} style={{ textDecoration: "none" }}>
             <FilmCard
               key={movie.id}

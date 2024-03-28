@@ -9,14 +9,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
-const Header = ({onSearchChange}) => {
-  const [searchValue, setSearchValue] = useState("");
-
-  const handleSearchChange = (e:any) => {
-    const value = e.target.value;
-    setSearchValue(value);
-    onSearchChange(value); 
-  };
+const Header = () => {
+   
   return (
     <HStack
       bg={"black"}
@@ -35,13 +29,7 @@ const Header = ({onSearchChange}) => {
       >
         TRNCinebeam
       </Text>
-      {/* <HStack justifyContent="space-between" width="25%">
-        <Text>Drama</Text>
-        <Text>Romantic</Text>
-        <Text>Action</Text>
-        <Text>Fear</Text>
-      </HStack> */}
-      <InputGroup width="20%" height="30px">
+      {/* <InputGroup width="20%" height="30px">
         <InputLeftElement padding="5px" cursor="pointer">
           <SearchIcon color={"black"} />
         </InputLeftElement>
@@ -56,7 +44,7 @@ const Header = ({onSearchChange}) => {
           value={searchValue}
           onChange={handleSearchChange}
         />
-      </InputGroup>
+      </InputGroup> */}
     </HStack>
   );
 };

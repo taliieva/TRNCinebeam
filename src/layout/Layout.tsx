@@ -3,11 +3,11 @@ import Header from '../components/Header.tsx'
 import Footer from '../components/Footer.tsx'
 import { set } from 'lodash'
 
-const Layout = ({children, setSearchValue}) => {
+const Layout = ({children}) => {
   return (
     <div>
       <header>
-        <Header onSearchChange={setSearchValue}/>
+        <Header/>
       </header>
       <main>{children}</main>
       <footer>
