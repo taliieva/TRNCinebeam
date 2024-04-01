@@ -188,8 +188,8 @@ const FilmId = () => {
           </VStack>
         </VStack>
 
-        <Box bg={"#908F8F"} w="20vw" p={20} height="85vh">
-          <VStack bg="#DCDCDC" borderRadius={15}>
+        <Box bg={"#908F8F"} w="20vw" p={15} height="85vh">
+          <VStack bg="#DCDCDC" borderRadius={5}>
             <Text color="black" mt={10} textAlign="start" w="100%" pl={20}>Similar films:</Text>
             <VStack alignItems="flex-start" p={20}>
               {similarFilms?.map((film: any) => (
