@@ -1,4 +1,4 @@
-import { StarIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, StarIcon } from "@chakra-ui/icons";
 import { VStack, Text, HStack, Image, Heading, Grid, Box, Flex, Input } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -149,22 +149,66 @@ const FilmId = () => {
     // </VStack>
     <Box width="100%" bg="rgba(0,0,0,0.8)" height="100vh" padding="50px 100px">
       <HStack alignItems={"center"}>
-        <VStack bgImg={`https://image.tmdb.org/t/p/w500${details?.backdrop_path}`} bgSize="cover" bgRepeat="no-repeat" width="95vw" height="85vh" alignItems={"flex-start"}>
-          <Heading>{details?.original_title}</Heading>
-          <HStack>
-            <StarIcon color={'yellow'} />
-            <Text>{details && details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}/10</Text>
-            <span>|</span>
-            <Text>{Math.round(details?.popularity ?? 0)}</Text>
-            <span>|</span>
-            <Text>{details?.release_date}</Text>
-            <span>|</span>
-            <Text>{details?.genres}</Text>
-          </HStack>
-        </VStack>
-        <VStack>
+        <VStack padding={20} gap={30} color="white" bgImg={`https://image.tmdb.org/t/p/w500${details?.backdrop_path}`} bgSize="cover" bgRepeat="no-repeat" width="60vw" height="85vh" alignItems={"flex-start"}>
+          <VStack height="100%" justifyContent={"space-between"} alignItems="flex-start">
+            <HStack>
+              <Link to="/" style={{ color: "white" }}> <ArrowLeftIcon /></Link>
+              <Text>Back to home</Text>
+            </HStack>
+            <VStack alignItems="flex-start">
+              <Heading fontSize={30}>{details?.original_title}</Heading>
+              <HStack fontSize={18}>
+                <StarIcon color={'yellow'} />
+                <Text>{details && details.vote_average ? details.vote_average.toFixed(1) : 'N/A'}/10</Text>
+                <span>|</span>
+                <Text>{Math.round(details?.popularity ?? 0)}</Text>
+                <span>|</span>
+                <Text>{details?.release_date}</Text>
+                <span>|</span>
+                {details?.genres.map((genre: any) => (
+                  <Text key={genre.id}>{genre?.name}</Text>
+                ))}
+              </HStack>
+              <Text width="70%" fontSize={16}>{details?.overview}</Text>
+              {videos.length > 0 && (
+                <VStack alignItems="flex-start">
+                  <Text>Trailers:</Text>
+                  <HStack>
+                    {videos?.map((video: any, index) => (
+                      <div key={video.id} className="react-player" style={{ padding: "5px 5px 20px 5px", backgroundColor: "white", borderRadius: "10px" }}>
+                        <ReactPlayer url={`https://www.youtube.com/watch?v=${video.key}`} controls={true} width="100%" height="100%" />
+                        <Text color="black" fontSize="16px">Trailer {index + 1}</Text>
+                      </div>
+                    ))}
+                  </HStack>
+                </VStack>
+              )}
 
+            </VStack>
+          </VStack>
         </VStack>
+
+        <Box bg={"#908F8F"} w="20vw" p={20} height="85vh">
+          <VStack bg="#DCDCDC" borderRadius={15}>
+            <Text color="black" mt={10} textAlign="start" w="100%" pl={20}>Similar films:</Text>
+            <VStack alignItems="flex-start" p={20}>
+              {similarFilms?.map((film: any) => (
+                <Link to={`/movie/${film.id}`} key={film.id} style={{ textDecoration: "none" }}>
+                  <HStack alignItems="center" cursor="pointer">
+                    <Image src={`https://image.tmdb.org/t/p/w200${film?.poster_path}`} height="90px" />
+                    <VStack>
+                      <Text fontSize="15px" color="black">{film.title}</Text>
+                      <HStack alignItems="flex-start" width="100%" fontSize="14px">
+                        <StarIcon color="yellow" />
+                        <Text color="black">{film?.vote_average}</Text>
+                      </HStack>
+                    </VStack>
+                  </HStack>
+                </Link>
+              ))}
+            </VStack>
+          </VStack>
+        </Box>
       </HStack>
     </Box>
   );
