@@ -9,12 +9,8 @@ const CardContainer = () => {
   const [movies, setMovies] = useState<any[]>([]);
   const [originalMovies, setOriginalMovies] = useState<any[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [openMenu, setOpenMenu] = useState(false);
 
 
-  const showCategories = () => {
-    setOpenMenu(!openMenu)
-  }
   const fetchCardResponse = async () => {
     try {
       let url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=9ace6723368dd9ec426287eee17509e3";
@@ -52,9 +48,10 @@ const CardContainer = () => {
     console.log(`Movies with genre id ${genreId}:`, moviesByGenre);
     setMovies(moviesByGenre);
   };
-  // const filteredMovies = movies.filter(movie =>
-  //   movie.original_title.toLowerCase().includes(searchValue ? searchValue.toLowerCase() : "")
-  // );
+  const resetFilter = () => {
+    setSearchValue("");
+    setMovies(originalMovies);
+  };
 
   return (
     <VStack padding={30} alignItems={"flex-start"} width="100%">
@@ -65,6 +62,7 @@ const CardContainer = () => {
           <Text id="35" onClick={() => handleClick(35)} cursor={"pointer"} bg="pink" p={5} borderRadius={5}>Comedy</Text>
           <Text id="10749" onClick={() => handleClick(10749)} cursor={"pointer"} bg="pink" p={5} borderRadius={5}>Romance</Text>
           <Text id="12" onClick={() => handleClick(12)} cursor={"pointer"} bg="pink" p={5} borderRadius={5}>Adventure</Text>
+          <Text onClick={resetFilter} cursor={"pointer"} bg="#1D1DC7" color="white" p="5px 20px" borderRadius={20}>Reset</Text>
         </HStack>
         <InputGroup height="30px" w="500px" mr="50px">
           <InputLeftElement p="6px">
